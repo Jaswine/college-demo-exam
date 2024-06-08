@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
-
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,4 +35,9 @@ Route::prefix('/')->group(function () {
     Route::get('/cart', [CartController::class, 'cart'])->name('cart');
     Route::get('/add-to-cart/{id}', [CartController::class, 'add_to_cart'])->name('add-to-cart');
     Route::get('/remove-from-cart/{id}', [CartController::class, 'remove_from_cart'])->name('remove-from-cart');
+
+    Route::post('/create-order', [OrderController::class, 'create_order'])->name('create-order');
+    Route::get('/remove-order/{id}', [OrderController::class, 'remove_order'])->name('remove-order');
+
+    Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
 });

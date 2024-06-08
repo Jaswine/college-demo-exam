@@ -12,10 +12,16 @@ class CartController extends Controller
 {
     public function cart(Request $request) {
         if (Auth::check()) {
+            $price = 0;
             $products = Auth::user()->products;
 
+            foreach ($products as $product) {
+                $price += $product->price;
+            }
+
             return view('cart', [
-                'products' => $products
+                'products' => $products,
+                'price' => $price,
             ]);
         }
 

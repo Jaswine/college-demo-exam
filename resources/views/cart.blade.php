@@ -67,6 +67,52 @@
         </tbody>
       </table>
     </div>
+
+    <h2 class="btn btn-primary">{{ $price }}$</h2>
+
+    @if ($price > 0)
+    <form class="p-4 p-md-5 border rounded-3 bg-body-tertiary" method="POST" style="width: 100%;  margin: 4vh 0; " action="/create-order">
+      <h2 style="width: 100%; text-align: center; margin-bottom: 4vh">Create order</h2>
+      @csrf
+      <div style="width: 100%; gap: 4%; display: flex">
+        <div style="width: 100%">
+          <div class="form-floating mb-3">
+            <input type="text" name="fio" class="form-control" id="floatingInput" required />
+            <label for="floatingInput">Full Name</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" name="phone" class="form-control" id="floatingPassword" required />
+            <label for="floatingPassword">Phone number</label>
+          </div>
+        </div>
+        <div style="width: 100%">
+          <div class="form-floating mb-3">
+            <input type="email" name="email" class="form-control" id="floatingInput" required />
+            <label for="floatingInput">Email</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" name="address" class="form-control" id="floatingPassword" required />
+            <label for="floatingPassword">Address</label>
+          </div>
+        </div>
+  
+      </div>
+
+      <div class="form-floating mb-3" >
+        <select class="form-control" name="payment_method">
+          <option selected disabled>Select payment type</option>
+          <option>Card</option>
+          <option>PayPal</option>
+        </select>
+        <label for="floatingPassword">Payment Type</label>
+      </div>
+  
+      <button class="w-100 btn btn-lg btn-primary" type="submit">Send</button>
+      <hr class="my-4">
+    </form>
+    @else
+    <h2>Price is 0$</h2>
+    @endif
    </div>
     
 </body>
