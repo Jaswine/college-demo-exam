@@ -10,20 +10,16 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 
-        'description', 
-        'image_path', 
-        'price',
-        'category',
+        'title', 'description', 'image_path', 'category', 'price'
     ];
-    
+
     public function users()
     {
-        return $this->belongsToMany(User::class, 'product_users');
+        return $this->belongsToMany(User::class)->withPivot('id');
     }
 
     public function orders()
     {
-        return $this->belongsToMany(Order::class, 'order_products');
+        return $this->belongsToMany(Order::class);
     }
 }

@@ -43,18 +43,13 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    /**
-     * The products that belong to the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function products(): BelongsToMany
+    public function products()
     {
-        return $this->belongsToMany(Product::class, 'product_users');
+        return $this->belongsToMany(Product::class, 'user_product')->withPivot('id');
     }
 
     public function orders()
     {
-        return $this->belongsToMany(Order::class, 'order_users');
+        return $this->belongsToMany(Order::class);
     }
 }

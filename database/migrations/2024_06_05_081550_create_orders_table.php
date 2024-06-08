@@ -13,16 +13,15 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('number')->unique();
+            $table->string('unique_numbers')->unique();
+            $table->timestamp('delivered_at');
 
             $table->string('fio');
-            $table->string('phone');
             $table->string('email');
+            $table->string('phone');
             $table->string('address');
-            $table->string('payment_data');
-            $table->string('deliver_status');
-            
-            $table->timestamp('delivered_at')->nullable();
+            $table->string('payment_method');
+
             $table->timestamps();
         });
     }

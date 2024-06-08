@@ -9,9 +9,9 @@ class ProductController extends Controller
 {
     public function productList(Request $request) {
         $products = Product::all();
-
-        return view('ProductList', [
+        return view('product_list', [
             'products' => $products,
         ]);
     }
+    
 }

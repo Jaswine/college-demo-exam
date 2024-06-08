@@ -2,74 +2,80 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\User;
+use Sessions;
+use Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    public function login(Request $request) {
-        /*
-            Login 
-        */
-        return view('Login', [
-            'message' => '',
+    // Sign In page
+    public function sign_in(Request $request)
+    {
+        return view('sign_in', [
+            'message' => ''
         ]);
     }
 
-    public function login_post(Request $request) {
-        /*
-            Login 
-        */
-        // Берем пользователя по почте и паролю
-        $user = User::where('email', $request->email)
-            ->where('password', $request->passord)
-            ->first();
-
-        // Проверяем пользователя на существование
-        if ($user) {
-            // Создаем сессию
-            $request->session()->regenerate();
-            // Перекидываем на главную страницу 
-            //                      и возвращаем данные пользователя
-            return redirect('/')->with('user', $user);
-        }
-        
-        // Возвращаем сообщение об ошибке
-        return view('Login', [
-            'message' => 'Email or password is incorrect!',
+    // Authorization
+    public function sign_in_post(Request $request) 
+    {
+        $request->validate([
+            'email' => 'required',
+            'password' => 'required',
         ]);
-    }
 
-
-    public function registration(Request $request) {
-        /*
-            Registration 
-        */
-        return view('Registration', [
-            'message' => '',
-        ]);
-    }
-
-    public function registration_post(Request $request) {
-        /*
-            Registration 
-        */
-        // Проверяем, что пользователя не существует, 
-        //                          иначе выводи сообщение об ошибке
-        if (User::where('email', $request->email)->first() 
-                or User::where('name', $request->username)->first()) {
-            return view('Registration', [
-                'message' => 'Email or username is exists!',
-            ]);
-        }
-
-        // Создаем пользователя
-        $user = User::create([
-            'name' => $request->username,
+        if (Auth::attempt([
             'email' => $request->email,
             'password' => $request->password,
+        ])) {
+            return redirect('/product-list')->withSuccess('Signed in successfully!');
+        }
+        
+        return redirect('/sign-in')->withSuccess('Login details are not valid');
+    }
+
+    // Sign Up page
+    public function sign_up(Request $request) 
+    {
+        return view('sign_up');
+    }
+
+    // Create a new account
+    public function sign_up_post(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|unique:users',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6',
+        ]);
+        
+        if ($request->password != $request->password_confirmation) {
+            return redirect('/sign-up')->withSuccess('Passwords don\'t match');
+        }
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password)
         ]);
 
-        return redirect('/')->with('user', $user);
+        if ($user and Auth::attempt([
+            'email' => $request->email,
+            'password' => $request->password,
+        ])) {
+            return redirect('product-list')->withSuccuss('Registered successfully');
+        } else {
+         return redirect('/sign-up')->withSuccess('Registration details are not valid');
+        }
+        
+    }
+
+    // Sign Out
+    public function sign_out(Request $request) {
+        Session::flush();
+        Auth::logout();
+        return Redirect('sign-in');
     }
 }
