@@ -9,6 +9,42 @@
 </head>
 <body>
 
+    <?php
+        // Подключение бд
+        require_once 'config.php';
+        // Чтобы PHP помнил пользователя между страницами    
+        session_start();
+
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+            # В input пользователя добавить name="name"
+            $name = $_POST['name'];
+            # В input пользователя добавить name="email"
+            $email = $_POST['email'];
+            # В input пользователя добавить name="password"
+            $password = $_POST['password'];
+
+            # Ошибка, лежит в форме, под input-ами
+            $error = "";
+
+            # Добавить type="submit" к button в форму и method="post" в форму, тег form
+            $stmt = $pdo->prepare("SELECT * FROM User WHERE email = ?");
+            $stmt->execute([$email]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($user) {
+                $error = "Пользователь уже существует";
+            }
+            else {
+                $pdo->query("INSERT INTO User (name, email, password) VALUES ('$name', '$email', '$password')");    
+
+                $_SESSION['user_email'] = $user['email'];
+
+                header("Location: home.php");
+            }
+        }
+        ?>
+
     <!-- Header -->
     <header class="header">
         
@@ -17,14 +53,14 @@
         </div>
 
         <div class="header__menu">
-            <a href="">Главная</a>
-            <a href="">Описание</a>
-            <a href="">Категория</a>
-            <a href="">Корзина</a>
+            <a href="./home.php">Главная</a>
+            <a href="./home.php">Описание</a>
+            <a href="./categories.php">Категория</a>
+            <a href="./basket.php">Корзина</a>
         </div>
 
         <div class="header__buttons">
-            <button class="btn">Войти</button>
+            <a class="btn" href="./login.php">Войти</a>
         </div>
 
     </header>
@@ -36,25 +72,31 @@
         <div class="login__left">
             <img src="https://images.pexels.com/photos/27524189/pexels-photo-27524189.jpeg" alt="">
         </div>
-        <form class="login__right">
+        <form class="login__right" method="post">
             <h1>Регистрация</h1>
 
             <div class="form__field">
-                <label for="">Name:</label>
-                <input type="text" placeholder="" />
+                <label>Name:</label>
+                <input type="text" name="name" placeholder="" />
             </div>
 
             <div class="form__field">
-                <label for="">Email:</label>
-                <input type="text" placeholder="" />
+                <label>Email:</label>
+                <input type="email" name="email" placeholder="" />
             </div>
             
             <div class="form__field">
-                <label for="">Password:</label>
-                <input type="text" placeholder="" />
+                <label>Password:</label>
+                <input type="password" name="password" placeholder="" />
             </div>
 
-            <button class="btn">Продолжить</button>
+            <?php if (!empty($error)): ?>
+                <div style="color:red;">
+                    <?= $error ?>
+                </div>
+            <?php endif; ?>
+
+            <button class="btn" type="submit">Продолжить</button>
 
             <p>У вас уже есть аккаунт? <a href="">Войти</a></p>
         </form>

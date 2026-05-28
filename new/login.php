@@ -12,6 +12,8 @@
     <?php
         // Подключение бд
         require_once 'config.php';
+        // Чтобы PHP помнил пользователя между страницами    
+        session_start();
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -21,9 +23,9 @@
             $password = $_POST['password'];
 
             # Ошибка, лежит в форме, под input-ами
-            $error = "Error";
+            $error = "";
 
-            # Добавить type="submit" к button в форму
+            # Добавить type="submit" к button в форму и method="post" в форму, тег form
             $stmt = $pdo->prepare("SELECT * FROM User WHERE email = ?");
             $stmt->execute([$email]);
 
@@ -32,86 +34,88 @@
             if (!$user) {
                 $error = "Пользователь не найден";
             }
-
-            if ($password != $user['password']) {
+            else if ($password !== $user['password']) {
                 $error = "Неверный пароль";
             }
+            else {
+                $_SESSION['user_email'] = $user['email'];
 
-            // создаём сессию
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['email'] = $user['email'];
-
-            echo "Вы вошли!";
+                header("Location: home.php");
+            }
         }
-    ?>
+        ?>
 
 
-    <!-- Header -->
-    <header class="header">
-        
-        <div class="header__title">
-            COMFY.
-        </div>
-
-        <div class="header__menu">
-            <a href="">Главная</a>
-            <a href="">Описание</a>
-            <a href="">Категория</a>
-            <a href="">Корзина</a>
-        </div>
-
-        <div class="header__buttons">
-            <button class="btn">Войти</button>
-        </div>
-
-    </header>
-
-    <div class="content">
-
-    <!-- Логин -->
-    <div class="login">
-        <div class="login__left">
-            <img src="https://images.pexels.com/photos/14133592/pexels-photo-14133592.jpeg" alt="">
-        </div>
-        <form class="login__right">
-            <h1>Вход</h1>
-
-            <div class="form__field">
-                <label for="">Email:</label>
-                <input type="email" name="email" placeholder="" required />
-            </div>
-
+        <!-- Header -->
+        <header class="header">
             
-            <div class="form__field">
-                <label for="">Password:</label>
-                <input type="password" name="password" placeholder="" required />
+            <div class="header__title">
+                COMFY.
             </div>
 
-            <!-- Ошибка -->
-                    <?= $error ?>
-          
+            <div class="header__menu">
+                <a href="./home.php">Главная</a>
+                <a href="./home.php">Описание</a>
+                <a href="./categories.php">Категория</a>
+                <a href="./basket.php">Корзина</a>
+            </div>
 
-            <!-- ВАЖНЫЙ type="submit" -->
-            <button type="submit" class="btn">Продолжить</button>
+            <div class="header__buttons">
+                <a class="btn" href="./login.php">Войти</a>
+            </div>
 
-            <p>У вас нет аккаунта? <a href="">Регистрация</a></p>
-        </form>
-    </div>
+        </header>
 
-    </div>
+        <div class="content">
 
-    <!-- Нижний блок -->
-    <footer class="footer">
-        <div class="footer__left">
-            <a href="">Facebook</a>
-            <a href="">Instagram</a>
-            <a href="">Pinterest</a>
-            <a href="">Telegram</a>
+        <!-- Логин -->
+        <div class="login">
+            <div class="login__left">
+                <img src="https://images.pexels.com/photos/14133592/pexels-photo-14133592.jpeg" alt="">
+            </div>
+            <form class="login__right" method="post">
+                <h1>Вход</h1>
+
+                <div class="form__field">
+                    <label for="">Email:</label>
+                    <input type="email" name="email" placeholder="" required />
+                </div>
+
+                
+                <div class="form__field">
+                    <label for="">Password:</label>
+                    <input type="password" name="password" placeholder="" required />
+                </div>
+
+                <!-- Ошибка -->
+                <?php if (!empty($error)): ?>
+                    <div style="color:red;">
+                        <?= $error ?>
+                    </div>
+                <?php endif; ?>
+            
+
+                <!-- ВАЖНЫЙ type="submit" -->
+                <button type="submit" class="btn">Продолжить</button>
+
+                <p>У вас нет аккаунта? <a href="">Регистрация</a></p>
+            </form>
         </div>
-        <div class="footer__right">
-            <p>+1(111)111-11-11</p>
+
         </div>
-    </footer>
-    
-</body>
-</html> 
+
+        <!-- Нижний блок -->
+        <footer class="footer">
+            <div class="footer__left">
+                <a href="">Facebook</a>
+                <a href="">Instagram</a>
+                <a href="">Pinterest</a>
+                <a href="">Telegram</a>
+            </div>
+            <div class="footer__right">
+                <p>+1(111)111-11-11</p>
+            </div>
+        </footer>
+        
+    </body>
+    </html> 

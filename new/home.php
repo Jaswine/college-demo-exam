@@ -11,8 +11,16 @@
 <body>
 
     <?php
+        // Активация сессий, чтобы PHP помнил пользователя между страницами    
+        session_start();
         // Подключение бд
         require_once 'config.php';
+        // Подключение Auth модуля
+        require_once 'auth.php';
+
+        // Взятие текущего пользователя из сессии
+        $current_user = getCurrentUser();
+        echo $current_user['email'];
 
         // Взятие всех продуктов
         $stmt = $pdo->query("SELECT * FROM Product");
@@ -27,14 +35,20 @@
         </div>
 
         <div class="header__menu">
-            <a href="./home.html">Главная</a>
-            <a href="./home.html">Описание</a>
-            <a href="./categories.html">Категория</a>
-            <a href="./basket.html">Корзина</a>
+            <a href="./home.php">Главная</a>
+            <a href="./home.php">Описание</a>
+            <a href="./categories.php">Категория</a>
+            <a href="./basket.php">Корзина</a>
         </div>
 
         <div class="header__buttons">
-            <button class="btn">Выйти</button>
+            <!-- Проверка регистрации пользователя -->
+            <?php if ($current_user): ?>
+                <a class="btn" href="./basket.php">Корзина</a>
+                <a class="link" href="./user.php"><?=$current_user["email"] ?></a>
+            <?php else: ?>
+                <a class="btn" href="./login.php">Войти</a>
+            <?php endif; ?>
         </div>
 
     </header>
