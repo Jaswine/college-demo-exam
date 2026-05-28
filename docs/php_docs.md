@@ -17,8 +17,8 @@
 
 2. Создаем поля, помечаем что ID - PRIMARY и галочку у A I, и CURRENT_TIMESTAMP в колонке Default у created_at / updated_at для автоматической смены даты
 
-![alt text](image-13.png)
+![alt text](images/image-13.png)
 
 Таблицы (с минимальными коллонками):
 
-![alt text](image-14.png)
+![alt text](images/image-14.png)
