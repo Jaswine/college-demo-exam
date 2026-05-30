@@ -20,7 +20,6 @@
 
         // Взятие текущего пользователя из сессии
         $current_user = getCurrentUser();
-        echo $current_user['email'];
 
         // Взятие всех продуктов
         $stmt = $pdo->query("SELECT * FROM Product");

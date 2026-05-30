@@ -16,7 +16,6 @@
         session_start();
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
-
             # В input пользователя добавить name="email"
             $email = $_POST['email'];
             # В input пользователя добавить name="password"

@@ -42,6 +42,7 @@
                 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 if ($user) {
+                    echo $user["id"];
                     return $user;
                 }
             } 

@@ -101,6 +101,67 @@ footer {
     color: var(--yellow);
 }
 
+/* Форма */
+form {
+    width: 100%;
+    padding: 5% 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 8px;
+    /* border: 1.5px solid rgb(20, 20, 20, .1); */
+    box-shadow: 0 0 10px rgb(20, 20, 20, .1);
+    gap: 20px;
+
+}
+form h2 {
+    font-size: 42px;
+    margin: 20px 0 5%;
+}
+.form__item {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5%;
+}
+.form__field {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    flex-direction: column;
+    width: 100%;
+
+}
+.form__field label {
+    color: var(--primary);
+    margin-bottom: 4px;
+    font-weight: 500;
+    font-size: 18px;
+}
+.form__field input, .form__field select {
+    color: var(--primary);
+    border: 2px solid var(--primary);
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 18px;
+    padding: 10px 10px;
+    border-radius: 8px;
+    width: 100%;
+    font-weight: 400;
+    transition: all .3s linear;
+}
+.form__field input:focus, 
+.form__field select:focus {
+    outline: none;
+    border-color: var(--yellow);
+}
+
+form .btn {
+    margin-top: 20px;
+    padding: 14px 10%;
+}
+
 /* Контент тег */
 .content {
     padding: 0 5%;
@@ -191,6 +252,19 @@ h1 {
     align-items: center;
     width: 100%;
 }
+.category__info__button {
+    padding: 0;
+    width: 110px;
+    margin-top: 20px;
+    box-shadow: none;
+}
+.category__info__button .btn {
+    margin-top: 0;
+    
+}
+.category .category__info form button {
+
+}
 .category .category__info span {
     font-weight: 700;
     font-size: 20px;
@@ -250,6 +324,13 @@ h1 {
     padding: 4px;
     color: var(--white);
 }
+.basket__item__right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
 .basket__footer {
     margin-top: 5%;
     display: flex;
@@ -264,67 +345,6 @@ h1 {
     font-size: 26px;
     font-weight: 600;
     border-radius: 8px;
-}
-
-/* Форма */
-form {
-    width: 100%;
-    padding: 5% 10%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    border-radius: 8px;
-    /* border: 1.5px solid rgb(20, 20, 20, .1); */
-    box-shadow: 0 0 10px rgb(20, 20, 20, .1);
-    gap: 20px;
-
-}
-form h2 {
-    font-size: 42px;
-    margin: 20px 0 5%;
-}
-.form__item {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 5%;
-}
-.form__field {
-    display: flex;
-    justify-content: start;
-    align-items: start;
-    flex-direction: column;
-    width: 100%;
-
-}
-.form__field label {
-    color: var(--primary);
-    margin-bottom: 4px;
-    font-weight: 500;
-    font-size: 18px;
-}
-.form__field input, .form__field select {
-    color: var(--primary);
-    border: 2px solid var(--primary);
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 18px;
-    padding: 10px 10px;
-    border-radius: 8px;
-    width: 100%;
-    font-weight: 400;
-    transition: all .3s linear;
-}
-.form__field input:focus, 
-.form__field select:focus {
-    outline: none;
-    border-color: var(--yellow);
-}
-
-form .btn {
-    margin-top: 20px;
-    padding: 14px 10%;
 }
 
 /* Логин */

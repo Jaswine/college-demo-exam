@@ -14,9 +14,17 @@
         // Активация сессий, чтобы PHP помнил пользователя между страницами    
         session_start();
 
-        
         // Взятие текущего пользователя из сессии
         $current_user = getCurrentUser();
+
+        // Добавление продуктов в корзину
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            $user_id = $current_user["id"];
+            $product_id = $_POST["product_id"];
+
+            $stmt = $pdo->prepare("INSERT INTO UserProduct (user_id, product_id) VALUES (?, ?)");
+            $stmt->execute([$user_id, $product_id]);
+        }
     ?>
 
     <!-- Header -->
@@ -59,7 +67,6 @@
         </div>
 
         <div class="categories">
-
         
         <?php
             // Подключение бд
@@ -90,7 +97,15 @@
                 <h3 class="title"><?= $product["title"] ?></h3>
                 <div class="category__info">
                     <span><?= $product["price"] ?> тг</span>
-                    <button class="btn">В корзину</button>
+
+                    <!-- <button class="btn" type="submit">В корзину</button> -->
+
+                    <!-- Кнопка добавления в корзину -->
+                    <form method="POST" class="category__info__button">
+                        <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                        <button class="btn" type="submit">В корзину</button>
+                    </form>
+
                 </div>
             </div>
         <?php endforeach; ?>
