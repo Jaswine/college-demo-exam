@@ -72,7 +72,7 @@
         $password = $_POST['password'];
 
         # Добавить type="submit" к button в форму и method="post" в форму, тег form
-        $stmt = $pdo->prepare("SELECT * FROM User WHERE email ='$email'");
+        $stmt = $pdo->query("SELECT * FROM User WHERE email = '$email'");
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
     }
 ```
@@ -90,7 +90,7 @@
         $password = $_POST['password'];
 
         # Добавить type="submit" к button в форму и method="post" в форму, тег form
-        $stmt = $pdo->prepare("SELECT * FROM User WHERE email ='$email'");
+        $stmt = $pdo->query("SELECT * FROM User WHERE email = '$email'");
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         $error = "";

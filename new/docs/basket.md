@@ -56,8 +56,11 @@
 
     ```php
         // Взятие объектов из корзины
+        // Взятие объектов из корзины
         $stmt = $pdo->prepare("
-            SELECT p.*
+            SELECT
+                p.*,
+                up.id AS user_product_id
             FROM Product p
             INNER JOIN UserProduct up ON p.id = up.product_id
             INNER JOIN User u ON u.id = up.user_id
@@ -113,7 +116,7 @@
 ```php
     <!-- Кнопка удаления из корзины -->
     <form method="POST" class="category__info__button">
-        <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+        <input type="hidden" name="user_product_id" value="<?= $product['user_product_id'] ?>">
         <button class="btn" type="submit">Удалить</button>
     </form>
 ``` 
@@ -130,7 +133,7 @@
 
                     <!-- Кнопка удаления из корзины -->
                 <form method="POST" class="category__info__button">
-                    <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                    <input type="hidden" name="user_product_id" value="<?= $product['user_product_id'] ?>">
                     <button class="btn" type="submit">Удалить</button>
                 </form>
             
@@ -154,3 +157,24 @@
     }
 ```
 
+
+### Вывод общей суммы в корзине
+
+1. Пишем подсчет
+
+```php
+    $total_sum = 0;
+    foreach ($products as $product) {
+        $total_sum += $product["price"];
+    }
+```
+
+2. Выводим
+
+```php
+    <div class="basket__footer">
+        <div class="basket__footer__total_sum">
+            Общая сумма: <?=$total_sum ?> тг
+        </div>
+    </div>
+```

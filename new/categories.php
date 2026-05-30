@@ -17,13 +17,18 @@
         // Взятие текущего пользователя из сессии
         $current_user = getCurrentUser();
 
-        // Добавление продуктов в корзину
-        if ($_SERVER["REQUEST_METHOD"] === "POST") {
-            $user_id = $current_user["id"];
-            $product_id = $_POST["product_id"];
+        // Проверка что пользователь существует и от этого двигать логику
+        if ($current_user) {
+            // Добавление продуктов в корзину
+            if ($_SERVER["REQUEST_METHOD"] === "POST") {
+                $user_id = $current_user["id"];
+                $product_id = $_POST["product_id"];
 
-            $stmt = $pdo->prepare("INSERT INTO UserProduct (user_id, product_id) VALUES (?, ?)");
-            $stmt->execute([$user_id, $product_id]);
+                $stmt = $pdo->prepare("INSERT INTO UserProduct (user_id, product_id) VALUES (?, ?)");
+                $stmt->execute([$user_id, $product_id]);
+            }
+        } else {
+            header("Location: login.php");
         }
     ?>
 
